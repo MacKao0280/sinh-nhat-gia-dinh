@@ -66,6 +66,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:12px 18px 30p
       <h2>📅 Danh sách & sinh nhật sắp tới</h2>
       <div class="toolbar"><input id="search" placeholder="Tìm theo tên hoặc quan hệ…"><select id="sort"><option value="upcoming">Sinh nhật sắp tới</option><option value="name">Tên A–Z</option><option value="age">Tuổi tăng dần</option></select></div>
       <div id="upcoming"></div>
+      <button type="button" class="secondary" onclick="enableBirthdayReminders()">🔔 Bật nhắc sinh nhật</button>
       <div id="peopleList"></div>
       <div class="actions"><button class="secondary" id="exportBtn" type="button">⬇ Sao lưu dữ liệu</button><label class="filebtn ghost" style="text-align:center;margin:0;flex:1">⬆ Khôi phục dữ liệu<input id="importFile" type="file" accept=".json,application/json" hidden></label><button class="ghost" id="printBtn" type="button">In danh sách</button></div>
       <p class="sub">Sao lưu tạo tệp JSON. Tệp này chứa thông tin gia đình, hãy cất giữ an toàn.</p>
@@ -110,5 +111,46 @@ $('importFile').addEventListener('change',async e=>{const f=e.target.files[0];if
 $('printBtn').addEventListener('click',()=>window.print());
 if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 render();
+  // Nhắc sinh nhật trong 7 ngày tới
+function checkBirthdayReminders() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission !== 'granted') return;
+
+  const today = new Date();
+  const reminders = people.filter(p => {
+    const diff = dayDiff(nextBirthday(p.birthdate));
+    return diff >= 0 && diff <= 7;
+  });
+
+  if (reminders.length === 0) return;
+
+  const key = 'birthdayReminderDate';
+  const todayKey = today.toLocaleDateString('en-CA');
+  if (localStorage.getItem(key) === todayKey) return;
+
+  const names = reminders.map(p => p.name).join(', ');
+  new Notification('🎂 Nhắc sinh nhật gia đình', {
+    body: 'Sinh nhật trong 7 ngày tới: ' + names
+  });
+
+  localStorage.setItem(key, todayKey);
+}
+
+// Chỉ xin quyền khi người dùng chủ động bật
+function enableBirthdayReminders() {
+  if (!('Notification' in window)) {
+    alert('Trình duyệt này không hỗ trợ thông báo.');
+    return;
+  }
+
+  Notification.requestPermission().then(permission => {
+    if (permission === 'granted') {
+      checkBirthdayReminders();
+      alert('Đã bật quyền thông báo sinh nhật!');
+    } else {
+      alert('Bạn chưa cho phép thông báo.');
+    }
+  });
+}
 </script>
 </body></html>
