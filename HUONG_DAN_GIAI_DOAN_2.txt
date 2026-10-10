@@ -1,0 +1,39 @@
+SINH NHẬT GIA ĐÌNH — GIAI ĐOẠN 2: ĐƯA LÊN HTTPS VÀ CÀI NHƯ ỨNG DỤNG
+
+GÓI NÀY ĐÃ CÓ:
+- index.html: ứng dụng
+- manifest.webmanifest: thông tin cài đặt PWA
+- sw.js: bộ nhớ đệm/offline cơ bản
+- icon-192.svg, icon-512.svg, favicon.svg: biểu tượng
+- Dữ liệu thành viên vẫn lưu cục bộ trong trình duyệt, không tự tải lên hosting.
+
+CÁCH DỄ NHẤT CHO NGƯỜI MỚI: GITHUB PAGES
+1. Tạo/đăng nhập tài khoản GitHub tại https://github.com/
+2. Tạo repository mới. Đặt tên ví dụ: sinh-nhat-gia-dinh
+3. Chọn Public để GitHub Pages miễn phí hoạt động thuận tiện. Lưu ý: mã ứng dụng là công khai, nhưng dữ liệu sinh nhật không nằm trong mã và vẫn được lưu cục bộ trên từng thiết bị. Không đưa dữ liệu gia đình hoặc tệp sao lưu JSON vào repository.
+4. Trong repository, chọn Add file > Upload files.
+5. Tải lên CÁC TỆP BÊN TRONG thư mục sinh_nhat_gia_dinh (index.html, manifest.webmanifest, sw.js và các tệp icon), không tải tệp ZIP.
+6. Nhấn Commit changes.
+7. Vào Settings > Pages.
+8. Trong Build and deployment, chọn Deploy from a branch; Branch: main; folder: /(root); nhấn Save.
+9. Chờ GitHub Pages hoàn tất. Địa chỉ thường có dạng https://TEN-TAI-KHOAN.github.io/sinh-nhat-gia-dinh/ . Hãy dùng chính URL GitHub cung cấp, không đoán URL nếu tên khác.
+10. Mở URL trên Chrome/Edge. Kiểm tra ứng dụng chạy, thêm dữ liệu thử và tải lại trang.
+11. Trên Android: mở URL bằng Chrome > menu ⋮ > Install app hoặc Add to Home screen (tên mục có thể khác).
+12. Trên máy tính: mở URL bằng Chrome/Edge; tìm biểu tượng cài đặt ứng dụng ở thanh địa chỉ hoặc menu trình duyệt. Nếu chưa xuất hiện, kiểm tra lại manifest, service worker và URL HTTPS.
+13. Trên iPhone: mở URL bằng Safari > nút Share > Add to Home Screen. Hành vi cài đặt/thông báo phụ thuộc phiên bản iOS.
+
+BẢO MẬT VÀ GIỚI HẠN:
+- Hosting công khai chỉ chứa mã giao diện; dữ liệu người thân lưu trong localStorage trên mỗi trình duyệt.
+- Mỗi thiết bị là một kho dữ liệu riêng, không tự đồng bộ.
+- Dùng nút Sao lưu dữ liệu trong ứng dụng để xuất JSON. Không tải JSON chứa dữ liệu cá nhân lên GitHub.
+- Không dùng chế độ ẩn danh; không xóa dữ liệu trang web nếu chưa sao lưu.
+- Service worker hỗ trợ tải lại/offline sau lần truy cập trực tuyến thành công, nhưng hãy kiểm thử trên thiết bị thực tế.
+- Đây chưa phải hệ thống nhắc đẩy sinh nhật khi app đóng. Tính năng đó cần thiết kế thêm.
+
+KIỂM THỬ SAU KHI ĐƯA LÊN:
+[ ] URL là HTTPS và mở được trên máy tính.
+[ ] Thêm/sửa/xóa thành viên hoạt động.
+[ ] Tải lại trang, dữ liệu vẫn còn trên cùng trình duyệt.
+[ ] Sao lưu và khôi phục JSON thành công.
+[ ] Trên điện thoại, mở URL và thêm vào màn hình chính.
+[ ] Sau khi mở ứng dụng ít nhất một lần khi có mạng, thử bật chế độ máy bay và mở lại để kiểm tra khả năng offline.

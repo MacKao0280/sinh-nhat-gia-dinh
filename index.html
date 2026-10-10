@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#9f1239">
+<title>Sinh Nhật Gia Đình</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<style>
+:root{--red:#9f1239;--pink:#fff1f2;--gold:#f59e0b;--ink:#1f2937;--muted:#64748b;--line:#e5e7eb;--green:#166534}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#fff8f7;color:var(--ink)}
+header{background:linear-gradient(120deg,#881337,#be123c);color:white;padding:24px 18px 30px}
+.wrap{max-width:1100px;margin:auto}header h1{margin:0;font-size:clamp(24px,4vw,36px)}header p{margin:8px 0 0;color:#ffe4e6}
+main{max-width:1100px;margin:-14px auto 40px;padding:0 14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.stat,.panel{background:white;border:1px solid #f3d6dc;border-radius:16px;padding:16px;box-shadow:0 5px 20px #8813370c}
+.stat strong{display:block;font-size:26px;color:var(--red)}.stat span{font-size:13px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:minmax(280px, .85fr) minmax(0,1.5fr);gap:16px}
+h2{font-size:19px;margin:0 0 14px}label{display:block;font-size:13px;font-weight:650;margin:10px 0 5px}
+input,select,textarea{font:inherit;width:100%;padding:10px 11px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:var(--ink)}
+textarea{resize:vertical;min-height:65px}
+button,.filebtn{font:inherit;border:0;border-radius:10px;padding:10px 13px;cursor:pointer;font-weight:650}
+.primary{background:var(--red);color:#fff}.secondary{background:#ffe4e6;color:#881337}.ghost{background:#f1f5f9;color:#334155}.danger{background:#fee2e2;color:#991b1b}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.actions button{flex:1}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.toolbar input{flex:1;min-width:150px}
+.person{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#ffe4e6;font-size:23px;flex:none}
+.person-info{min-width:0;flex:1}.person-info strong{display:block;overflow-wrap:anywhere}.sub{font-size:13px;color:var(--muted);margin-top:3px}
+.person-actions{display:flex;gap:6px}.person-actions button{padding:7px 9px}
+.badge{display:inline-block;background:#fef3c7;color:#92400e;padding:3px 7px;border-radius:99px;font-size:12px;margin-top:5px}
+.empty{padding:24px;text-align:center;color:var(--muted)}
+.note{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:12px;font-size:13px;line-height:1.5;color:#7c2d12;margin-top:14px}
+.notice{padding:10px 12px;border-radius:10px;margin-bottom:12px;display:none}.notice.ok{display:block;background:#dcfce7;color:#166534}.notice.err{display:block;background:#fee2e2;color:#991b1b}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:12px 18px 30px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:22px}.person{align-items:flex-start}.person-actions{flex-direction:column}}
+@media print{header{background:white;color:black;padding:10px}.layout .panel:first-child,.toolbar,.person-actions,footer,.note{display:none!important}main{margin:0}.layout{display:block}.panel{box-shadow:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>🎂 Sinh Nhật Gia Đình</h1><p>Nhớ ngày đặc biệt · Gửi trao yêu thương · Lưu giữ riêng tư</p></div></header>
+<main>
+  <div class="stats">
+    <div class="stat"><strong id="countAll">0</strong><span>Thành viên</span></div>
+    <div class="stat"><strong id="countMonth">0</strong><span>Sinh nhật trong 30 ngày tới</span></div>
+    <div class="stat"><strong id="countToday">0</strong><span>Sinh nhật hôm nay</span></div>
+  </div>
+  <div id="notice" class="notice" role="status"></div>
+  <div class="layout">
+    <section class="panel">
+      <h2 id="formTitle">➕ Thêm thành viên</h2>
+      <form id="personForm">
+        <input id="personId" type="hidden">
+        <label for="name">Họ và tên *</label><input id="name" required maxlength="100" placeholder="Ví dụ: Nguyễn Văn An">
+        <label for="birthdate">Ngày sinh *</label><input id="birthdate" required type="date">
+        <label for="relation">Quan hệ trong gia đình</label>
+        <select id="relation"><option>Ông/Bà</option><option>Bố/Mẹ</option><option>Vợ/Chồng</option><option>Con</option><option>Anh/Chị/Em</option><option>Cô/Dì/Chú/Bác</option><option>Cháu</option><option>Khác</option></select>
+        <label for="phone">Số điện thoại (không bắt buộc)</label><input id="phone" type="tel" maxlength="30" placeholder="Chỉ nhập nếu cần">
+        <label for="gift">Gợi ý quà tặng</label><input id="gift" maxlength="200" placeholder="Ví dụ: sách, hoa, món ăn yêu thích">
+        <label for="notes">Ghi chú</label><textarea id="notes" maxlength="1000" placeholder="Sở thích, lời chúc muốn gửi..."></textarea>
+        <div class="actions"><button class="primary" type="submit" id="saveBtn">Lưu thành viên</button><button class="secondary" type="button" id="cancelBtn" hidden>Hủy sửa</button></div>
+      </form>
+      <div class="note"><strong>Riêng tư:</strong> dữ liệu được lưu trong trình duyệt trên thiết bị này, không tự gửi lên máy chủ. Vì vậy dữ liệu không tự đồng bộ giữa máy tính và điện thoại. Hãy xuất bản sao lưu định kỳ và không xóa dữ liệu trình duyệt khi chưa sao lưu.</div>
+    </section>
+    <section class="panel">
+      <h2>📅 Danh sách & sinh nhật sắp tới</h2>
+      <div class="toolbar"><input id="search" placeholder="Tìm theo tên hoặc quan hệ…"><select id="sort"><option value="upcoming">Sinh nhật sắp tới</option><option value="name">Tên A–Z</option><option value="age">Tuổi tăng dần</option></select></div>
+      <div id="upcoming"></div>
+      <div id="peopleList"></div>
+      <div class="actions"><button class="secondary" id="exportBtn" type="button">⬇ Sao lưu dữ liệu</button><label class="filebtn ghost" style="text-align:center;margin:0;flex:1">⬆ Khôi phục dữ liệu<input id="importFile" type="file" accept=".json,application/json" hidden></label><button class="ghost" id="printBtn" type="button">In danh sách</button></div>
+      <p class="sub">Sao lưu tạo tệp JSON. Tệp này chứa thông tin gia đình, hãy cất giữ an toàn.</p>
+    </section>
+  </div>
+</main>
+<footer>Phiên bản đầu tiên · Dữ liệu cá nhân lưu cục bộ trên thiết bị</footer>
+<script>
+const KEY='sinhNhatGiaDinh_v1';
+const $=id=>document.getElementById(id);
+let people=loadPeople();
+function loadPeople(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(people));render();message('Đã lưu dữ liệu trên thiết bị này.','ok')}
+function message(text,type){const n=$('notice');n.textContent=text;n.className='notice '+type;setTimeout(()=>{n.className='notice'},4000)}
+function dateOnly(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function ageAt(birth,at=new Date()){const b=dateOnly(birth);let a=at.getFullYear()-b.getFullYear();if(at.getMonth()<b.getMonth()||(at.getMonth()===b.getMonth()&&at.getDate()<b.getDate()))a--;return a}
+function nextBirthday(birth){const b=dateOnly(birth),now=new Date();let y=now.getFullYear();let d=new Date(y,b.getMonth(),b.getDate());if(d<new Date(now.getFullYear(),now.getMonth(),now.getDate()))d=new Date(y+1,b.getMonth(),b.getDate());return d}
+function dayDiff(d){const a=new Date();a.setHours(0,0,0,0);return Math.round((d-a)/86400000)}
+function fmt(d){return d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'})}
+function birthdayLabel(p){const n=nextBirthday(p.birthdate),diff=dayDiff(n);return diff===0?'Hôm nay':diff===1?'Ngày mai':`Còn ${diff} ngày`}
+function escapeHTML(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){
+ $('countAll').textContent=people.length;
+ $('countToday').textContent=people.filter(p=>dayDiff(nextBirthday(p.birthdate))===0).length;
+ $('countMonth').textContent=people.filter(p=>dayDiff(nextBirthday(p.birthdate))<=30).length;
+ const upcoming=[...people].sort((a,b)=>nextBirthday(a.birthdate)-nextBirthday(b.birthdate)).slice(0,3);
+ $('upcoming').innerHTML=upcoming.length?'<div style="background:#fff7ed;border-radius:12px;padding:0 12px;margin-bottom:12px"><div class="sub" style="padding-top:10px;font-weight:700;color:#9a3412">SẮP ĐẾN</div>'+upcoming.map(p=>personHTML(p,true)).join('')+'</div>':'';
+ let arr=people.filter(p=>(p.name+' '+p.relation).toLowerCase().includes($('search').value.toLowerCase()));
+ const sort=$('sort').value;
+ arr.sort((a,b)=>sort==='name'?a.name.localeCompare(b.name,'vi'):sort==='age'?ageAt(b.birthdate)-ageAt(a.birthdate):nextBirthday(a.birthdate)-nextBirthday(b.birthdate));
+ $('peopleList').innerHTML=arr.length?arr.map(p=>personHTML(p,false)).join(''):'<div class="empty">Chưa có thành viên phù hợp. Hãy thêm người thân ở biểu mẫu bên trái.</div>';
+}
+function personHTML(p,compact){const next=nextBirthday(p.birthdate),diff=dayDiff(next),age=ageAt(p.birthdate,next);
+return `<div class="person"><div class="avatar">🎂</div><div class="person-info"><strong>${escapeHTML(p.name)}</strong><div class="sub">${escapeHTML(p.relation||'Khác')} · Sinh ${fmt(dateOnly(p.birthdate))}</div><div class="sub">Sắp tới: ${fmt(next)} · Tròn ${age} tuổi</div><span class="badge">${birthdayLabel(p)}</span>${p.gift?`<div class="sub">🎁 ${escapeHTML(p.gift)}</div>`:''}${p.notes?`<div class="sub">${escapeHTML(p.notes)}</div>`:''}</div>${compact?'':`<div class="person-actions"><button class="ghost" onclick="editPerson('${p.id}')">Sửa</button><button class="danger" onclick="deletePerson('${p.id}')">Xóa</button></div>`}</div>`}
+$('personForm').addEventListener('submit',e=>{e.preventDefault();const id=$('personId').value;const p={id:id||crypto.randomUUID(),name:$('name').value.trim(),birthdate:$('birthdate').value,relation:$('relation').value,phone:$('phone').value.trim(),gift:$('gift').value.trim(),notes:$('notes').value.trim()};if(!p.name||!p.birthdate)return;if(dateOnly(p.birthdate)>new Date()){message('Ngày sinh không thể ở tương lai.','err');return}if(id)people=people.map(x=>x.id===id?p:x);else people.push(p);resetForm();persist()});
+function editPerson(id){const p=people.find(x=>x.id===id);if(!p)return;$('personId').value=p.id;$('name').value=p.name;$('birthdate').value=p.birthdate;$('relation').value=p.relation;$('phone').value=p.phone||'';$('gift').value=p.gift||'';$('notes').value=p.notes||'';$('formTitle').textContent='✏️ Sửa thông tin thành viên';$('saveBtn').textContent='Cập nhật';$('cancelBtn').hidden=false;window.scrollTo({top:0,behavior:'smooth'})}
+function deletePerson(id){const p=people.find(x=>x.id===id);if(p&&confirm(`Xóa thông tin của ${p.name}? Thao tác này không thể hoàn tác nếu chưa sao lưu.`)){people=people.filter(x=>x.id!==id);persist()}}
+function resetForm(){$('personForm').reset();$('personId').value='';$('formTitle').textContent='➕ Thêm thành viên';$('saveBtn').textContent='Lưu thành viên';$('cancelBtn').hidden=true}
+$('cancelBtn').addEventListener('click',resetForm);$('search').addEventListener('input',render);$('sort').addEventListener('change',render);
+$('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({app:'Sinh Nhật Gia Đình',version:1,exportedAt:new Date().toISOString(),people},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sao-luu-sinh-nhat-gia-dinh.json';a.click();URL.revokeObjectURL(a.href);message('Đã tạo tệp sao lưu. Hãy cất giữ ở nơi an toàn.','ok')});
+$('importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());const list=Array.isArray(data)?data:data.people;if(!Array.isArray(list)||!list.every(p=>p.name&&p.birthdate)){throw new Error('bad')}if(confirm(`Khôi phục ${list.length} thành viên? Dữ liệu hiện tại sẽ được thay thế.`)){people=list.map(p=>({id:p.id||crypto.randomUUID(),name:String(p.name),birthdate:String(p.birthdate),relation:p.relation||'Khác',phone:p.phone||'',gift:p.gift||'',notes:p.notes||''}));persist()}}catch(err){message('Tệp không đúng định dạng hoặc bị lỗi.','err')}e.target.value=''});
+$('printBtn').addEventListener('click',()=>window.print());
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();
+</script>
+</body></html>

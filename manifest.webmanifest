@@ -1,0 +1,27 @@
+{
+  "id": "./",
+  "name": "Sinh Nhật Gia Đình",
+  "short_name": "Sinh Nhật",
+  "description": "Ứng dụng quản lý sinh nhật gia đình cá nhân",
+  "lang": "vi-VN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fff8f7",
+  "theme_color": "#9f1239",
+  "icons": [
+    {
+      "src": "./icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
