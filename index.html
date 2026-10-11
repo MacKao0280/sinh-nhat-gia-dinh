@@ -117,23 +117,27 @@ function checkBirthdayReminders() {
   if (Notification.permission !== 'granted') return;
 
   const today = new Date();
+  const today = new Date();
   const reminders = people.filter(p => {
     const diff = dayDiff(nextBirthday(p.birthdate));
     return diff >= 0 && diff <= 7;
   });
 
-  if (reminders.length === 0) return;
-
   const key = 'birthdayReminderDate';
   const todayKey = today.toLocaleDateString('en-CA');
-  if (localStorage.getItem(key) === todayKey) return;
 
-  const names = reminders.map(p => p.name).join(', ');
-  new Notification('🎂 Nhắc sinh nhật gia đình', {
-    body: 'Sinh nhật trong 7 ngày tới: ' + names
-  });
+  const names = reminders.length
+    ? reminders.map(p => p.name).join(', ')
+    : 'Đây là thông báo thử nghiệm. Chức năng thông báo đang hoạt động!';
 
-  localStorage.setItem(key, todayKey);
+  if (localStorage.getItem(key) !== todayKey) {
+    new Notification('🎂 Nhắc sinh nhật gia đình', {
+      body: reminders.length
+        ? 'Sinh nhật trong 7 ngày tới: ' + names
+        : names
+    });
+
+    localStorage.setItem(key, todayKey);
 }
 
 // Chỉ xin quyền khi người dùng chủ động bật
